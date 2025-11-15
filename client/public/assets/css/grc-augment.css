@@ -1,0 +1,3 @@
+/* grc-augment.css - minimal styles for overlays and panel */
+.grc-overlay { pointer-events:none; }
+#grc-slide-panel { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }

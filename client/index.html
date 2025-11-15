@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>GRC Consulting</title>
+
+    <!-- ===== FAVICON (best compatibility + modern fallbacks + emoji fallback) ===== -->
+    <!-- Most compatible: explicit root favicon.ico -->
+    <link rel="icon" href="/favicon.ico">
+
+    <!-- Modern browsers: PNG + SVG -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+    <!-- Emoji fallback as inline SVG data-URI (works in many browsers; kept as fallback) -->
+    <link id="emoji-favicon" rel="icon" href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22><text y=%22.9em%22 font-size=%2230%22>⚖️</text></svg>'>
+
+    <!-- Optional: Apple touch icon -->
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+    <!-- Styles & fonts (keep your existing links) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/grc-augment.css" />
+
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <!-- React entry -->
+    <script type="module" src="/src/main.tsx"></script>
+    <script src="/assets/js/grc-augment.js"></script>
+
+    <!-- ===== FAVICON CACHE-BUSTER (tries to force browsers to refresh the favicon) ===== -->
+    <script>
+      (function() {
+        try {
+          // Append a version query param to help bypass aggressive caching after deploys
+          var updateFavicon = function(path) {
+            var links = document.querySelectorAll('link[rel~="icon"]');
+            for (var i = 0; i < links.length; i++) {
+              var href = links[i].getAttribute('href') || '';
+              // Only update if it's a root or internal asset (avoid external).
+              if (href && href.indexOf('http') !== 0) {
+                // add timestamp to force reload
+                var url = href.split('?')[0] + '?v=' + (new Date().getTime());
+                links[i].setAttribute('href', url);
+              }
+            }
+          };
+          // Try twice: immediately and after a short delay (some browsers need it).
+          updateFavicon('/favicon.ico');
+          setTimeout(function(){ updateFavicon('/favicon.ico'); }, 1200);
+        } catch (e) {
+          // fail silently
+          console.error('favicon refresh error', e);
+        }
+      })();
+    </script>
+
+    <!-- ===== TAWK.TO CONSENT-LOADER (GDPR friendly) ===== -->
+    <script>
+      (function(){
+        var TAWK_EMBED_URL = 'https://embed.tawk.to/691056525ee0901956279862/1j9jt2d6p';
+
+        // Inject the tawk script only once
+        function loadTawk() {
+          if (window.__TAWK_LOADED) return;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = TAWK_EMBED_URL;
+          s.charset = 'UTF-8';
+          s.setAttribute('crossorigin', '*');
+          document.head.appendChild(s);
+          window.__TAWK_LOADED = true;
+        }
+
+        // Consent state persisted in localStorage: 'accepted' | 'declined' | null
+        var consent = null;
+        try { consent = localStorage.getItem('tawk_consent'); } catch(e) { consent = null; }
+
+        // If user previously accepted, load immediately
+        if (consent === 'accepted') {
+          loadTawk();
+        }
+
+        // Create a minimal consent banner if consent not set
+        if (!consent) {
+          var banner = document.createElement('div');
+          banner.id = 'tawk-cookie-banner';
+          banner.style.cssText = 'position:fixed;right:20px;bottom:20px;max-width:360px;background:#fff;border:1px solid rgba(0,0,0,0.08);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:14px;border-radius:10px;font-family:Inter,Arial,sans-serif;z-index:99999;';
+          banner.innerHTML =
+            '<div style="margin-bottom:8px;font-weight:600">Live chat (Tawk.to)</div>' +
+            '<div style="font-size:13px;margin-bottom:12px;color:#374151">Allow chat to enable instant support and lead capture. We will only enable the widget after you accept.</div>' +
+            '<div style="text-align:right">' +
+              '<button id="tawk-decline" style="margin-right:8px;padding:8px 10px;border-radius:6px;border:1px solid rgba(0,0,0,0.08);background:#f3f4f6;cursor:pointer">Decline</button>' +
+              '<button id="tawk-accept" style="padding:8px 10px;border-radius:6px;border:0;background:#0b5fff;color:#fff;cursor:pointer">Accept & Enable Chat</button>' +
+            '</div>';
+          document.body.appendChild(banner);
+        }
+
+        // Quick-enable floating button (hidden by default)
+        var quickBtn = document.createElement('button');
+        quickBtn.id = 'tawk-quick-btn';
+        quickBtn.title = 'Enable chat';
+        quickBtn.innerHTML = '&#128172;'; // 💬
+        quickBtn.style.cssText = 'position:fixed;right:20px;bottom:24px;width:56px;height:56px;border-radius:50%;display:none;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(2,6,23,0.08);background:#0b5fff;color:#fff;border:none;z-index:99998;cursor:pointer;font-size:20px;';
+        document.body.appendChild(quickBtn);
+
+        // If previously declined show quick button
+        if (consent === 'declined') {
+          try { quickBtn.style.display = 'flex'; } catch(e) {}
+        }
+
+        // Global click handler for these elements
+        document.addEventListener('click', function(e){
+          var t = e.target;
+          if (!t) return;
+
+          if (t.id === 'tawk-accept') {
+            try { localStorage.setItem('tawk_consent', 'accepted'); } catch(e) {}
+            loadTawk();
+            var b = document.getElementById('tawk-cookie-banner'); if (b) b.remove();
+            quickBtn.style.display = 'none';
+          } else if (t.id === 'tawk-decline') {
+            try { localStorage.setItem('tawk_consent', 'declined'); } catch(e) {}
+            var b = document.getElementById('tawk-cookie-banner'); if (b) b.remove();
+            quickBtn.style.display = 'flex';
+          } else if (t.id === 'tawk-quick-btn') {
+            try { localStorage.setItem('tawk_consent', 'accepted'); } catch(e) {}
+            loadTawk();
+            quickBtn.style.display = 'none';
+            var b = document.getElementById('tawk-cookie-banner'); if (b) b.remove();
+          }
+        }, false);
+
+        // quickBtn click (some browsers need direct listener)
+        quickBtn.addEventListener('click', function(){
+          try { localStorage.setItem('tawk_consent', 'accepted'); } catch(e) {}
+          loadTawk();
+          quickBtn.style.display = 'none';
+          var b = document.getElementById('tawk-cookie-banner'); if (b) b.remove();
+        });
+
+        // Accessibility: keyboard activation for quickBtn
+        quickBtn.addEventListener('keyup', function(ev){
+          if (ev.key === 'Enter' || ev.key === ' ') quickBtn.click();
+        });
+      })();
+    </script>
+
+    <!-- ===== NOTES =====
+      - Add a real favicon.ico at the project root for maximum compatibility:
+          /favicon.ico
+      - Optionally add modern assets:
+          /assets/favicon-32.png
+          /assets/favicon.svg
+          /assets/apple-touch-icon.png
+      - Commit & push the changed index.html and the favicon files to your repo and redeploy.
+    -->
+
+  </body>
+</html>

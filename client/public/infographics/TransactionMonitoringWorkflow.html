@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Monitoring Workflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .header h1 {
+            font-size: 2.8em;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        .header p {
+            font-size: 1.2em;
+            color: #718096;
+        }
+        .workflow-section {
+            margin-bottom: 50px;
+        }
+        .section-title {
+            background: linear-gradient(135deg, #134e5e, #71b280);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(19, 78, 94, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .section-icon {
+            font-size: 1.5em;
+        }
+        .flow-step {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 35px;
+            align-items: stretch;
+        }
+        .step-indicator {
+            flex-shrink: 0;
+            width: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .step-circle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #134e5e, #71b280);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            box-shadow: 0 8px 25px rgba(19, 78, 94, 0.3);
+            z-index: 2;
+            position: relative;
+        }
+        .step-line {
+            flex: 1;
+            width: 4px;
+            background: linear-gradient(to bottom, #134e5e, #71b280);
+            margin: 5px 0;
+        }
+        .flow-step:last-child .step-line {
+            display: none;
+        }
+        .step-content {
+            flex: 1;
+            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #134e5e;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .step-content:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 30px rgba(19, 78, 94, 0.2);
+        }
+        .step-title {
+            font-size: 1.6em;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .step-description {
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+        .step-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .detail-item {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #71b280;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .detail-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .detail-icon {
+            color: #71b280;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        .alert-types {
+            margin-top: 50px;
+            padding: 35px;
+            background: linear-gradient(135deg, #fff5e6 0%, #ffffff 100%);
+            border-radius: 15px;
+            border: 3px solid #f6ad55;
+        }
+        .alert-types h3 {
+            color: #c05621;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .alerts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .alert-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .alert-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .alert-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .alert-title {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .alert-examples {
+            list-style: none;
+        }
+        .alert-examples li {
+            padding: 5px 0 5px 20px;
+            position: relative;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+        .alert-examples li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #f6ad55;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        .decision-matrix {
+            margin-top: 50px;
+            padding: 35px;
+            background: linear-gradient(135deg, #e6f7ff 0%, #ffffff 100%);
+            border-radius: 15px;
+            border: 3px solid #4299e1;
+        }
+        .decision-matrix h3 {
+            color: #2c5282;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .outcomes {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .outcome-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2em;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .outcome-box:hover {
+            transform: scale(1.05);
+        }
+        .outcome-clear {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+        .outcome-escalate {
+            background: linear-gradient(135deg, #f6ad55, #ed8936);
+        }
+        .outcome-sar {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+        .metrics {
+            margin-top: 50px;
+            padding: 35px;
+            background: linear-gradient(135deg, #f0e6ff 0%, #ffffff 100%);
+            border-radius: 15px;
+            border: 3px solid #9f7aea;
+        }
+        .metrics h3 {
+            color: #553c9a;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .metric-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .metric-value {
+            font-size: 2em;
+            color: #9f7aea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .metric-label {
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Transaction Monitoring Workflow</h1>
+            <p>Automated Detection & Investigation of Suspicious Activities</p>
+        </div>
+
+        <div class="workflow-section">
+            <div class="section-title">
+                <span class="section-icon">⚙️</span>
+                <span>Transaction Monitoring Process</span>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-indicator">
+                    <div class="step-circle">1</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Data Collection & Integration</div>
+                    <div class="step-description">Aggregate transaction data from all relevant sources in real-time or near real-time</div>
+                    <div class="step-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Core banking systems
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Payment processing platforms
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Card transaction systems
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Wire transfer networks
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Customer information systems
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> External data sources
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-indicator">
+                    <div class="step-circle">2</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Automated Screening & Filtering</div>
+                    <div class="step-description">Apply predefined rules and scenarios to identify potentially suspicious transactions</div>
+                    <div class="step-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Rule-based detection (thresholds, patterns)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Behavioral analytics (peer comparison)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Machine learning algorithms
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Risk-based triggers
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Velocity checks (frequency, volume)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Sanction screening integration
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-indicator">
+                    <div class="step-circle">3</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Alert Generation & Prioritization</div>
+                    <div class="step-description">System generates alerts and assigns priority levels based on risk scoring</div>
+                    <div class="step-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Critical alerts (immediate review)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> High priority alerts (24-48 hours)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Medium priority alerts (weekly)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Low priority alerts (monthly review)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Alert aggregation and deduplication
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Queue assignment to investigators
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-indicator">
+                    <div class="step-circle">4</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Investigation & Analysis</div>
+                    <div class="step-description">AML analysts review alerts and conduct thorough investigations</div>
+                    <div class="step-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Review transaction history and patterns
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Analyze customer profile and risk rating
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Check for legitimate business purpose
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Review supporting documentation
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Conduct enhanced research if needed
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Document findings and rationale
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-indicator">
+                    <div class="step-circle">5</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Decision & Disposition</div>
+                    <div class="step-description">Determine appropriate action based on investigation findings</div>
+                    <div class="step-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Clear alert (false positive)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Escalate for senior review
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> File Suspicious Activity Report (SAR)
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Update customer risk rating
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Trigger enhanced due diligence
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Consider account restrictions/closure
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-step">
+                <div class="step-indicator">
+                    <div class="step-circle">6</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">Reporting & Quality Assurance</div>
+                    <div class="step-description">File regulatory reports and conduct quality reviews</div>
+                    <div class="step-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> SAR filing within regulatory timeframes
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Quality assurance review of decisions
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Management reporting and metrics
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Board and senior management updates
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Rule tuning and optimization
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">→</span> Continuous improvement initiatives
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert-types">
+            <h3>🚨 Common Alert Scenarios</h3>
+            <div class="alerts-grid">
+                <div class="alert-card">
+                    <div class="alert-icon">💰</div>
+                    <div class="alert-title">Structuring / Smurfing</div>
+                    <ul class="alert-examples">
+                        <li>Multiple transactions just below reporting threshold</li>
+                        <li>Deposits split across accounts or days</li>
+                        <li>Pattern of avoiding CTR filing</li>
+                    </ul>
+                </div>
+                <div class="alert-card">
+                    <div class="alert-icon">🔄</div>
+                    <div class="alert-title">Rapid Movement of Funds</div>
+                    <ul class="alert-examples">
+                        <li>Funds in and out within short timeframe</li>
+                        <li>Wire transfers with immediate withdrawal</li>
+                        <li>Pass-through accounts</li>
+                    </ul>
+                </div>
+                <div class="alert-card">
+                    <div class="alert-icon">📊</div>
+                    <div class="alert-title">Unusual Transaction Volume</div>
+                    <ul class="alert-examples">
+                        <li>Sudden increase in transaction frequency</li>
+                        <li>Volume inconsistent with profile</li>
+                        <li>Dormant account suddenly active</li>
+                    </ul>
+                </div>
+                <div class="alert-card">
+                    <div class="alert-icon">🌍</div>
+                    <div class="alert-title">High-Risk Jurisdictions</div>
+                    <ul class="alert-examples">
+                        <li>Transactions to/from sanctioned countries</li>
+                        <li>Transfers to high-risk jurisdictions</li>
+                        <li>Shell company in tax haven</li>
+                    </ul>
+                </div>
+                <div class="alert-card">
+                    <div class="alert-icon">💳</div>
+                    <div class="alert-title">Cash Activity</div>
+                    <ul class="alert-examples">
+                        <li>Large cash deposits or withdrawals</li>
+                        <li>Business with unusual cash volumes</li>
+                        <li>Cash structuring patterns</li>
+                    </ul>
+                </div>
+                <div class="alert-card">
+                    <div class="alert-icon">👥</div>
+                    <div class="alert-title">Third-Party Transactions</div>
+                    <ul class="alert-examples">
+                        <li>Frequent third-party payments</li>
+                        <li>Unclear relationship to payee</li>
+                        <li>Multiple unrelated third parties</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="decision-matrix">
+            <h3>⚖️ Alert Disposition Outcomes</h3>
+            <div class="outcomes">
+                <div class="outcome-box outcome-clear">
+                    <div style="font-size: 2em; margin-bottom: 10px;">✓</div>
+                    <div>CLEAR</div>
+                    <div style="font-size: 0.8em; font-weight: normal; margin-top: 10px;">False positive<br>No suspicious activity</div>
+                </div>
+                <div class="outcome-box outcome-escalate">
+                    <div style="font-size: 2em; margin-bottom: 10px;">↗</div>
+                    <div>ESCALATE</div>
+                    <div style="font-size: 0.8em; font-weight: normal; margin-top: 10px;">Requires additional review<br>Senior analyst decision</div>
+                </div>
+                <div class="outcome-box outcome-sar">
+                    <div style="font-size: 2em; margin-bottom: 10px;">⚠</div>
+                    <div>FILE SAR</div>
+                    <div style="font-size: 0.8em; font-weight: normal; margin-top: 10px;">Suspicious activity confirmed<br>Report to authorities</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics">
+            <h3>📊 Key Performance Indicators</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-value">24-72h</div>
+                    <div class="metric-label">Average Alert Review Time</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">85-95%</div>
+                    <div class="metric-label">False Positive Rate</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">Alert Disposition Rate</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">30 Days</div>
+                    <div class="metric-label">SAR Filing Timeline</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Transaction Monitoring Best Practices</strong> | Risk-Based Approach</p>
+            <p>Effective TM requires ongoing tuning, quality assurance, and regulatory reporting compliance</p>
+        </div>
+    </div>
+</body>
+</html>

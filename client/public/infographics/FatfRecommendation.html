@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FATF 40 Recommendations Overview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.8em;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        .header p {
+            font-size: 1.2em;
+            color: #718096;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+            border-radius: 15px;
+            border-left: 6px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .section-number {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .rec-item {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4c51bf;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .rec-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left-color: #667eea;
+        }
+        .rec-number {
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 8px;
+        }
+        .rec-text {
+            color: #4a5568;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9em;
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 FATF 40 Recommendations</h1>
+            <p>International Standards on Combating Money Laundering and Terrorist Financing</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">A</div>
+                <span>AML/CFT Policies and Coordination (R.1-2)</span>
+            </div>
+            <div class="recommendations">
+                <div class="rec-item">
+                    <span class="rec-number">R.1</span>
+                    <span class="rec-text">Assessing risks and applying risk-based approach</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.2</span>
+                    <span class="rec-text">National cooperation and coordination</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">B</div>
+                <span>Money Laundering and Confiscation (R.3-4)</span>
+            </div>
+            <div class="recommendations">
+                <div class="rec-item">
+                    <span class="rec-number">R.3</span>
+                    <span class="rec-text">Money laundering offence</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.4</span>
+                    <span class="rec-text">Confiscation and provisional measures</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">C</div>
+                <span>Terrorist Financing and Proliferation (R.5-8)</span>
+            </div>
+            <div class="recommendations">
+                <div class="rec-item">
+                    <span class="rec-number">R.5</span>
+                    <span class="rec-text">Terrorist financing offence</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.6</span>
+                    <span class="rec-text">Targeted financial sanctions - terrorism</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.7</span>
+                    <span class="rec-text">Targeted financial sanctions - proliferation</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.8</span>
+                    <span class="rec-text">Non-profit organisations</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">D</div>
+                <span>Preventive Measures (R.9-23)</span>
+            </div>
+            <div class="recommendations">
+                <div class="rec-item">
+                    <span class="rec-number">R.9</span>
+                    <span class="rec-text">Financial institution secrecy laws</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.10</span>
+                    <span class="rec-text">Customer due diligence (CDD)</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.11</span>
+                    <span class="rec-text">Record-keeping</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.12</span>
+                    <span class="rec-text">Politically exposed persons (PEPs)</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.13</span>
+                    <span class="rec-text">Correspondent banking</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.14</span>
+                    <span class="rec-text">Money or value transfer services</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.15</span>
+                    <span class="rec-text">New technologies</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.16</span>
+                    <span class="rec-text">Wire transfers</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.17</span>
+                    <span class="rec-text">Reliance on third parties</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.18</span>
+                    <span class="rec-text">Internal controls and foreign branches</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.19</span>
+                    <span class="rec-text">Higher-risk countries</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.20</span>
+                    <span class="rec-text">Reporting of suspicious transactions</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.21</span>
+                    <span class="rec-text">Tipping-off and confidentiality</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.22</span>
+                    <span class="rec-text">DNFBPs: Customer due diligence</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.23</span>
+                    <span class="rec-text">DNFBPs: Other measures</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">E</div>
+                <span>Transparency and Beneficial Ownership (R.24-25)</span>
+            </div>
+            <div class="recommendations">
+                <div class="rec-item">
+                    <span class="rec-number">R.24</span>
+                    <span class="rec-text">Transparency of legal persons</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.25</span>
+                    <span class="rec-text">Transparency of legal arrangements</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">F</div>
+                <span>Powers and Responsibilities (R.26-35)</span>
+            </div>
+            <div class="recommendations">
+                <div class="rec-item">
+                    <span class="rec-number">R.26</span>
+                    <span class="rec-text">Regulation and supervision of financial institutions</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.27</span>
+                    <span class="rec-text">Powers of supervisors</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.28</span>
+                    <span class="rec-text">Regulation and supervision of DNFBPs</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.29</span>
+                    <span class="rec-text">Financial intelligence units (FIUs)</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.30</span>
+                    <span class="rec-text">Responsibilities of law enforcement</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.31</span>
+                    <span class="rec-text">Powers of law enforcement</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.32</span>
+                    <span class="rec-text">Cash couriers</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.33</span>
+                    <span class="rec-text">Statistics</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.34</span>
+                    <span class="rec-text">Guidance and feedback</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.35</span>
+                    <span class="rec-text">Sanctions</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">G</div>
+                <span>International Cooperation (R.36-40)</span>
+            </div>
+            <div class="recommendations">
+                <div class="rec-item">
+                    <span class="rec-number">R.36</span>
+                    <span class="rec-text">International instruments</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.37</span>
+                    <span class="rec-text">Mutual legal assistance</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.38</span>
+                    <span class="rec-text">Mutual legal assistance: freezing and confiscation</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.39</span>
+                    <span class="rec-text">Extradition</span>
+                </div>
+                <div class="rec-item">
+                    <span class="rec-number">R.40</span>
+                    <span class="rec-text">Other forms of international cooperation</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Financial Action Task Force (FATF)</strong> | Updated Standards 2012-2023</p>
+            <p>For detailed guidance, visit www.fatf-gafi.org</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Customer Onboarding Process</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .header h1 {
+            font-size: 2.8em;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        .header p {
+            font-size: 1.2em;
+            color: #718096;
+        }
+        .process-container {
+            position: relative;
+        }
+        .phase {
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .phase-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(106, 17, 203, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .phase-icon {
+            font-size: 2.5em;
+        }
+        .phase-title {
+            flex: 1;
+        }
+        .phase-title h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        .phase-title p {
+            opacity: 0.9;
+            font-size: 1em;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .step-card {
+            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid #6a11cb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(106, 17, 203, 0.2);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .step-title {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .step-description {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        .step-items {
+            list-style: none;
+            margin-top: 15px;
+        }
+        .step-items li {
+            padding: 6px 0 6px 25px;
+            position: relative;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+        .step-items li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #6a11cb;
+            font-weight: bold;
+        }
+        .decision-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffffff 100%);
+            border: 3px solid #f6ad55;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .decision-box h3 {
+            color: #c05621;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+        .decision-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .decision-option {
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+            min-width: 150px;
+        }
+        .approve {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+        .reject {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.3);
+        }
+        .additional-diligence {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+            box-shadow: 0 5px 15px rgba(66, 153, 225, 0.3);
+        }
+        .risk-indicators {
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff0f0 0%, #ffffff 100%);
+            border-radius: 15px;
+            border: 2px solid #fc8181;
+        }
+        .risk-indicators h3 {
+            color: #c53030;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .indicator-item {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f56565;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .indicator-icon {
+            font-size: 1.5em;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👤 KYC Customer Onboarding Process</h1>
+            <p>Comprehensive Know Your Customer Framework</p>
+        </div>
+
+        <div class="process-container">
+            <div class="phase">
+                <div class="phase-header">
+                    <div class="phase-icon">📋</div>
+                    <div class="phase-title">
+                        <h2>Phase 1: Customer Identification</h2>
+                        <p>Collect and verify customer information</p>
+                    </div>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Information Collection</div>
+                        <div class="step-description">Gather required customer data and documentation</div>
+                        <ul class="step-items">
+                            <li>Full legal name and any aliases</li>
+                            <li>Date and place of birth</li>
+                            <li>Residential address</li>
+                            <li>Contact information</li>
+                            <li>Nationality and citizenship</li>
+                            <li>Occupation and employer</li>
+                        </ul>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Document Verification</div>
+                        <div class="step-description">Verify identity using official documents</div>
+                        <ul class="step-items">
+                            <li>Government-issued ID (passport, driver's license)</li>
+                            <li>Proof of address (utility bill, bank statement)</li>
+                            <li>For businesses: incorporation documents</li>
+                            <li>Tax identification number</li>
+                            <li>Verify document authenticity</li>
+                        </ul>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Beneficial Ownership</div>
+                        <div class="step-description">Identify ultimate beneficial owners (25%+ ownership)</div>
+                        <ul class="step-items">
+                            <li>Identify individuals with significant control</li>
+                            <li>Ownership structure documentation</li>
+                            <li>Ultimate beneficial owners (UBOs)</li>
+                            <li>Verify UBO identities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase">
+                <div class="phase-header">
+                    <div class="phase-icon">⚠️</div>
+                    <div class="phase-title">
+                        <h2>Phase 2: Risk Assessment</h2>
+                        <p>Evaluate customer risk profile</p>
+                    </div>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Customer Risk Rating</div>
+                        <div class="step-description">Assign risk level based on multiple factors</div>
+                        <ul class="step-items">
+                            <li>Geographic risk (country/region)</li>
+                            <li>Customer type (individual, corporate, PEP)</li>
+                            <li>Product/service risk</li>
+                            <li>Delivery channel risk</li>
+                            <li>Transaction patterns expected</li>
+                        </ul>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Screening Checks</div>
+                        <div class="step-description">Screen against regulatory lists and databases</div>
+                        <ul class="step-items">
+                            <li>Sanctions lists (OFAC, UN, EU)</li>
+                            <li>PEP databases</li>
+                            <li>Adverse media screening</li>
+                            <li>Law enforcement lists</li>
+                            <li>Internal watchlists</li>
+                        </ul>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">6</div>
+                        <div class="step-title">Source of Funds/Wealth</div>
+                        <div class="step-description">Understand the origin of customer's assets</div>
+                        <ul class="step-items">
+                            <li>Employment income verification</li>
+                            <li>Business revenue sources</li>
+                            <li>Inheritance or gifts documentation</li>
+                            <li>Investment returns</li>
+                            <li>Asset liquidation records</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="decision-box">
+                <h3>⚖️ Risk Decision Point</h3>
+                <p style="color: #4a5568; font-size: 1.1em; margin-top: 10px;">Based on risk assessment results, determine appropriate action</p>
+                <div class="decision-options">
+                    <div class="decision-option approve">✓ Approve<br>(Low/Medium Risk)</div>
+                    <div class="decision-option additional-diligence">↗ Enhanced Due Diligence<br>(High Risk)</div>
+                    <div class="decision-option reject">✗ Reject<br>(Unacceptable Risk)</div>
+                </div>
+            </div>
+
+            <div class="phase">
+                <div class="phase-header">
+                    <div class="phase-icon">✅</div>
+                    <div class="phase-title">
+                        <h2>Phase 3: Approval & Monitoring</h2>
+                        <p>Final approval and ongoing surveillance</p>
+                    </div>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">7</div>
+                        <div class="step-title">Account Approval</div>
+                        <div class="step-description">Obtain necessary approvals based on risk level</div>
+                        <ul class="step-items">
+                            <li>Low risk: Automated or first-line approval</li>
+                            <li>Medium risk: Compliance officer approval</li>
+                            <li>High risk: Senior management approval</li>
+                            <li>Document approval rationale</li>
+                        </ul>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">8</div>
+                        <div class="step-title">Account Setup</div>
+                        <div class="step-description">Create customer profile and set monitoring parameters</div>
+                        <ul class="step-items">
+                            <li>Set transaction limits</li>
+                            <li>Configure monitoring rules</li>
+                            <li>Assign risk rating in system</li>
+                            <li>Schedule periodic review dates</li>
+                        </ul>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">9</div>
+                        <div class="step-title">Ongoing Monitoring</div>
+                        <div class="step-description">Continuous surveillance and periodic reviews</div>
+                        <ul class="step-items">
+                            <li>Transaction monitoring (real-time)</li>
+                            <li>Periodic KYC refresh (annually/bi-annually)</li>
+                            <li>Trigger event reviews (unusual activity)</li>
+                            <li>Re-screening against updated lists</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-indicators">
+                <h3>🚨 Red Flags Requiring Enhanced Due Diligence</h3>
+                <div class="indicators-grid">
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Customer from high-risk jurisdiction</span>
+                    </div>
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Politically Exposed Person (PEP)</span>
+                    </div>
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Complex ownership structure</span>
+                    </div>
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Cash-intensive business</span>
+                    </div>
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Adverse media or negative news</span>
+                    </div>
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Unclear source of wealth/funds</span>
+                    </div>
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Frequent use of nominees or intermediaries</span>
+                    </div>
+                    <div class="indicator-item">
+                        <span class="indicator-icon">⚠️</span>
+                        <span>Large or unusual transaction patterns expected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>KYC Best Practices</strong> | Aligned with FATF Recommendations 10-11</p>
+            <p>Customer due diligence must be risk-based, documented, and subject to ongoing review</p>
+        </div>
+    </div>
+</body>
+</html>

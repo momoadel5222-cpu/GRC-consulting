@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AML Risk Assessment Process</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .header h1 {
+            font-size: 2.8em;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        .header p {
+            font-size: 1.2em;
+            color: #718096;
+        }
+        .process-flow {
+            position: relative;
+            padding: 20px 0;
+        }
+        .step {
+            position: relative;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .step-number {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        .step-content {
+            flex: 1;
+            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+            padding: 25px 30px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .step-content:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.2);
+        }
+        .step-title {
+            font-size: 1.5em;
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .step-description {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        .step-items {
+            list-style: none;
+            margin-top: 15px;
+        }
+        .step-items li {
+            padding: 8px 0 8px 25px;
+            position: relative;
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+        .step-items li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .connector {
+            position: absolute;
+            left: 39px;
+            top: 80px;
+            bottom: -40px;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            z-index: 1;
+        }
+        .step:last-child .connector {
+            display: none;
+        }
+        .risk-matrix {
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+        .matrix-title {
+            font-size: 1.8em;
+            color: #2d3748;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .risk-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .risk-level {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .risk-level:hover {
+            transform: translateY(-5px);
+        }
+        .risk-low {
+            background: linear-gradient(135deg, #38b2ac, #319795);
+        }
+        .risk-medium {
+            background: linear-gradient(135deg, #ecc94b, #d69e2e);
+        }
+        .risk-high {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+        .risk-critical {
+            background: linear-gradient(135deg, #742a2a, #c53030);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 AML Risk Assessment Process</h1>
+            <p>Comprehensive Framework for Money Laundering Risk Evaluation</p>
+        </div>
+
+        <div class="process-flow">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="connector"></div>
+                <div class="step-content">
+                    <div class="step-title">Risk Identification</div>
+                    <div class="step-description">Identify and document all potential ML/TF risks across the organization</div>
+                    <ul class="step-items">
+                        <li>Customer risk factors (PEPs, high-risk jurisdictions)</li>
+                        <li>Product and service risks (cash-intensive, cross-border)</li>
+                        <li>Geographic risks (sanctions, corruption levels)</li>
+                        <li>Delivery channel risks (non-face-to-face, agents)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="connector"></div>
+                <div class="step-content">
+                    <div class="step-title">Risk Analysis</div>
+                    <div class="step-description">Evaluate the likelihood and potential impact of identified risks</div>
+                    <ul class="step-items">
+                        <li>Assess inherent risk (before controls)</li>
+                        <li>Analyze historical data and trends</li>
+                        <li>Consider regulatory guidance and typologies</li>
+                        <li>Review industry best practices</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="connector"></div>
+                <div class="step-content">
+                    <div class="step-title">Risk Evaluation</div>
+                    <div class="step-description">Rate and prioritize risks using a consistent scoring methodology</div>
+                    <ul class="step-items">
+                        <li>Apply risk rating methodology (Low, Medium, High, Critical)</li>
+                        <li>Calculate composite risk scores</li>
+                        <li>Prioritize risks requiring immediate attention</li>
+                        <li>Document risk appetite and tolerance levels</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="connector"></div>
+                <div class="step-content">
+                    <div class="step-title">Control Assessment</div>
+                    <div class="step-description">Evaluate existing controls and their effectiveness</div>
+                    <ul class="step-items">
+                        <li>Review policies, procedures, and systems</li>
+                        <li>Test control effectiveness</li>
+                        <li>Identify control gaps and weaknesses</li>
+                        <li>Calculate residual risk (after controls)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="connector"></div>
+                <div class="step-content">
+                    <div class="step-title">Risk Mitigation</div>
+                    <div class="step-description">Develop and implement action plans to address identified risks</div>
+                    <ul class="step-items">
+                        <li>Design enhanced due diligence measures</li>
+                        <li>Strengthen transaction monitoring rules</li>
+                        <li>Implement additional controls where needed</li>
+                        <li>Assign responsibilities and timelines</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <div class="step-title">Monitoring & Review</div>
+                    <div class="step-description">Continuously monitor risks and update assessment regularly</div>
+                    <ul class="step-items">
+                        <li>Conduct periodic risk assessment reviews (annually minimum)</li>
+                        <li>Monitor changes in risk profile</li>
+                        <li>Update assessment for new products/markets</li>
+                        <li>Report findings to senior management and board</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="risk-matrix">
+            <div class="matrix-title">Risk Rating Categories</div>
+            <div class="risk-levels">
+                <div class="risk-level risk-low">
+                    <h3>LOW RISK</h3>
+                    <p style="margin-top: 10px; font-weight: normal; font-size: 0.9em;">Simplified due diligence may apply</p>
+                </div>
+                <div class="risk-level risk-medium">
+                    <h3>MEDIUM RISK</h3>
+                    <p style="margin-top: 10px; font-weight: normal; font-size: 0.9em;">Standard CDD procedures</p>
+                </div>
+                <div class="risk-level risk-high">
+                    <h3>HIGH RISK</h3>
+                    <p style="margin-top: 10px; font-weight: normal; font-size: 0.9em;">Enhanced due diligence required</p>
+                </div>
+                <div class="risk-level risk-critical">
+                    <h3>CRITICAL RISK</h3>
+                    <p style="margin-top: 10px; font-weight: normal; font-size: 0.9em;">Senior approval & ongoing monitoring</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Risk-Based Approach</strong> | Aligned with FATF Recommendations</p>
+            <p>Assessment should be documented, reviewed regularly, and approved by senior management</p>
+        </div>
+    </div>
+</body>
+</html>
